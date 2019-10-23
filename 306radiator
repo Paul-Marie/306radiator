@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+from sys import argv, stderr, exit
+from math import *
+
+# Do not modify this class, his default comportement is necessary for the program
+class   BadArgumentError(Exception):
+    def __init__(self, message, errors = "BadArgumentError"):
+        super().__init__(message)
+        self.errors = errors
+
+# Default object class
+class   Matrix():
+    """ Definition of Matrix class """
+    var = {'size': 0, 'rad_coord_x': 0, 'rad_coord_y': 0, 'room_coord_x': None, 'room_coord_y': None}
+    def __init__(self, argument, mode):
+        """ Initialise Separation's instance and check little errors """
+        for arg, i in zip(self.var, range(1, len(argument))):
+            self.var[arg] = float(argument[i])
+        self.matrix = [[1 if i is d else 0 for i in range(int(pow(self.var['size'], 2)))]
+                       for d in range(int(pow(self.var['size'], 2)))]
+        if self.var['rad_coord_x'] < 1 or self.var['rad_coord_x'] > self.var['size'] - 2 \
+           or self.var['rad_coord_x'] < 1 or self.var['rad_coord_x'] > self.var['size'] - 2:
+            raise BadArgumentError("invalid radiator coordinate")
+        for i in self.matrix:
+            #print(i)
+            print("\t".join(str(x) for x in i))
+
+    def computeValue(self):
+        """ Calculate all printable value required by printValue method """
+        pass
+
+    def printValue(self):
+        """ Print all computed value into the tab """
+        pass
+
+# Do not put more information in this function, it's must be clearer as possible
+def     main():
+    """ Main function who perform program's core action like arguments resolution """
+    if len(argv) is not 4 and len(argv) is not 6:
+        raise BadArgumentError("Usage: ./306radiator room_size coord_x coord_y [room_x room_y]")
+    obj = Matrix(argv, mode=len(argv) is 4)
+    obj.computeValue()
+    obj.printValue()
+
+# Don't touch at this except if u don't worry of problems
+if __name__ == "__main__":
+    main()
+    try:
+        main()
+    except BaseException as error:
+        stderr.write(str(type(error).__name__) + ": {}\n".format(error))
+        exit(84)
